@@ -1,0 +1,7 @@
+requirements.txt
+*.pyc
+db.sqlite3
+__pycache__
+Dockerfile
+docker-compose.yml
+

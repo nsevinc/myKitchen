@@ -1,0 +1,17 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'myKitchen/style.css' %}">
+<link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">My Kitchen Portal</a></h1>
+{% endblock %}
+
+{% if malzeme_list %}
+    <ul>
+    {% for malzemeler in malzeme_list %}
+        <li><a href="{% url 'detail' malzemeler.id %}">{{ malzemeler.malzeme_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No malzeme are available.</p>
+{% endif %}
