@@ -1,0 +1,71 @@
+{% extends 'myKitchen/base.html' %}
+
+{% block title %}
+  Anasayfa
+{% endblock title %}
+
+{% block main %}
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header"><h3>Lokasyonlar&nbsp;&nbsp;</h3>
+      <a href="new">
+        <button type="button" class="btn btn-outline-secondary"><i class="ik ik-plus-circle"></i>Yeni Lokasyon Ekle</button>
+      </a>
+      </div>
+      <div class="card-body">
+        <table id="data_table" class="table">
+          <thead>
+            <tr>
+              <th>İsim</th>
+              <th>Açıklama</th>
+              <th class="nosort"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if location_list %}
+            
+            {% for loc in location_list %}
+           
+            <tr>
+              <td>{{loc.name}}</td>
+              <td>{{loc.stext}}</td>
+              <td>
+                <div class="table-actions">
+                  <a href="view/{{loc.id}}"><i class="ik ik-eye"></i></a>
+                  <a href="{% url 'editlocations' pk=loc.id %}"><i class="ik ik-edit-2"></i></a>
+                  <a href="#"><i class="ik ik-trash-2"  data-toggle="modal" data-target="#deleteConfirm{{loc.id}}"></i></a>
+                </div>
+              </td>
+            </tr>
+          
+            <div class="modal fade" id="deleteConfirm{{loc.id}}" tabindex="-1" role="dialog" aria-labelledby="deleteConfirm{{loc.id}}Label" style="display: none;" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="deleteConfirm{{loc.id}}Label">Kayıt Silme Onayı</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                  </div>
+                  <div class="modal-body">
+                    <b>"{{loc.name}}"</b> isimli lokasyon silinecektir.
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+                    <a href="{% url 'locations_delete' pk=loc.id %}"><button type="button" class="btn btn-warning">Sil</button></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {% endfor %}
+            
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock main %}
+

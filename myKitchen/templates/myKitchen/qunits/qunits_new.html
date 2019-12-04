@@ -1,0 +1,34 @@
+{% extends 'myKitchen/base.html' %}
+
+{% block title %}
+  Anasayfa
+{% endblock title %}
+
+{% block main %}
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header"><h3>Yeni Miktar Birim Tanımlama</h3></div>
+      <div class="card-body">
+        {% if messages %}
+        <ul class="messages">
+          {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% if error %}
+        {{ error }}
+        {% endif %}
+        <form class="forms-sample" action="" method="POST">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit" value="POST" class="btn btn-primary mr-2">Kaydet</button>
+          <a onclick="javascript:history.back();" class="btn btn-light">İptal</a>
+        </form>
+        <br/><br/>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock main %}

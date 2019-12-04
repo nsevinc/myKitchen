@@ -1,0 +1,194 @@
+{% load static %}
+{% load i18n %}
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+        <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
+        
+        <link rel="stylesheet" href="{% static 'myKitchen/plugins/bootstrap/dist/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'myKitchen/plugins/fontawesome-free/css/all.min.css' %}">
+        <link rel="stylesheet" href="{% static 'myKitchen/plugins/icon-kit/dist/css/iconkit.min.css' %}">
+        <link rel="stylesheet" href="{% static 'myKitchen/plugins/ionicons/dist/css/ionicons.min.css' %}">
+        <link rel="stylesheet" href="{% static 'myKitchen/plugins/perfect-scrollbar/css/perfect-scrollbar.css' %}">        
+        <link rel="stylesheet" href="{% static 'myKitchen/plugins/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}">
+        <link rel="stylesheet" href="{% static 'myKitchen/dist/css/theme.min.css' %}">
+        
+       
+        
+        <script src="{% static 'myKitchen/src/js/vendor/modernizr-2.8.3.min.js' %}"></script>
+  </head>
+  
+    <title>
+        {% block title %} 
+        {% endblock title %}
+    </title>
+<body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+<div class="wrapper">
+    {% block header %}
+    
+            <header class="header-top" header-theme="light">
+                <div class="container-fluid">
+                    <div class="d-flex justify-content-between">
+                        <div class="top-menu d-flex align-items-center">
+                            <button type="button" class="btn-icon mobile-nav-toggle d-lg-none"><span></span></button>
+                            <button type="button" id="navbar-fullscreen" class="nav-link"><i class="ik ik-maximize"></i></button>
+                        </div>
+                        
+                        <div class="top-menu d-flex align-items-center">
+<form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+    <input name="next" type="hidden" value="{{ redirect_to }}" >
+    <select name="language"  class="form-control" onchange="this.form.submit();"> 
+        {% get_current_language as LANGUAGE_CODE %}
+        {% get_available_languages as LANGUAGES %}
+        {% get_language_info_list for LANGUAGES as languages %}
+        {% for language in languages %}
+        <a class="dropdown-item" href="#"><i class="ik ik-settings dropdown-icon"></i>{{ language.name_local }} ({{ language.code }})</a>
+            <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                {{ language.name_local }} ({{ language.code }})
+            </option>
+        {% endfor %}
+    </select>
+</form>
+
+
+                            
+                        <div class="top-menu d-flex align-items-center">
+                            <div class="dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="notiDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ik ik-bell"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right notification-dropdown" aria-labelledby="notiDropdown">
+                                    <h4 class="header">Bildirim</h4>
+                                    <div class="notifications-wrap">
+                                      
+                                        <a href="#" class="media">
+                                            <span class="d-flex">
+                                                <i class="ik ik-check"></i> 
+                                            </span>
+
+                                        </a>
+
+                                    </div>
+                                    <div class="footer">
+                                      <a href="javascript:void(0);"></a></div>
+                                </div>
+                            </div>
+
+                            
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="ik ik-menu"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">                                   
+                                    <a class="dropdown-item" href="#"><i class="ik ik-settings dropdown-icon"></i> Ayarlar</a>
+                                    <a class="dropdown-item" href="#"><span class="float-right"><span class="badge badge-primary">6</span></span><i class="ik ik-mail dropdown-icon"></i> Mesaj Kutusu</a>
+                                    <a class="dropdown-item" href="login.html"><i class="ik ik-power dropdown-icon"></i> Çıkış</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </header>
+    
+    {% endblock header %}
+    
+            <div class="page-wrap">
+                <div class="app-sidebar colored">
+                    <div class="sidebar-header">
+                        <a class="header-brand" href="/">
+                            <div class="logo-img" />
+                               <img src="/static/myKitchen/src/img/brand-white.svg" class="header-brand-img" alt="lavalite"> 
+                            </div>
+                            <span class="text">myKitchen ERP</span>
+                        </a>
+                        <button type="button" class="nav-toggle"><i data-toggle="expanded" class="ik ik-toggle-right toggle-icon"></i></button>
+                        <button id="sidebarClose" class="nav-close"><i class="ik ik-x"></i></button>
+                    </div>
+                    
+                    <div class="sidebar-content">
+                        <div class="nav-container">    
+    {% block solpanel %}
+                                <nav id="main-menu-navigation" class="navigation-main">
+                                <div class="nav-lavel">Genel</div>
+                                <div class="nav-item active">
+                                    <a href="/"><i class="ik ik-home"></i><span>Ana Sayfa</span></a>
+                                </div>
+                                <div class="nav-item">
+                                    <a href="/stocks"><i class="ik ik-package"></i><span>Stoklar</span></a>
+                                </div>
+                                <div class="nav-item">
+                                    <a href="/shoppinglist"><i class="ik ik-shopping-cart"></i><span>Alışveriş Listesi</span></a>
+                                </div>
+                                <div class="nav-item">
+                                    <a href="/recipes"><i class="ik ik-book-open"></i><span>Tarifler</span></a>
+                                </div>
+                                
+                                <div class="nav-lavel">Tanımlamalar</div>                                
+                                <div class="nav-item">
+                                    <a href="/locations"><i class="ik ik-bar-chart-2"></i><span>Lokasyonlar</span></a>
+                                </div>
+                                <div class="nav-item">
+                                    <a href="/qunits"><i class="ik ik-percent"></i><span>Miktar Birimleri</span></a>
+                                </div>
+                                <div class="nav-item">
+                                    <a href="/materialgroups"><i class="ik ik-grid"></i><span>Ürün Grupları</span></a>
+                                </div>                                
+                            </nav>
+    {% endblock solpanel %}
+                            
+                        </div>
+                    </div>
+                </div>    
+    
+                <div class="main-content">
+                    <div class="container-fluid">    
+    {% block main %}
+                    <div class="main-content">
+                    <div class="container-fluid">
+                       <div class="row clearfix"></div>
+                       Sayfa Yapım Aşamasında
+                        
+                    </div>
+                </div>
+    {% endblock main %}
+                    </div>
+                </div>
+                
+                <footer class="footer">
+                    <div class="w-100 clearfix">
+                   @Nuri Sevinç
+                    </div>
+                </footer>
+</div>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script>        
+        window.jQuery || document.write('<script src="{% static 'myKitchen/src/js/vendor/jquery-3.3.1.min.js' %}"><\/script>')
+        </script>
+        <script src="{% static 'myKitchen/plugins/popper.js/dist/umd/popper.min.js' %}"></script>
+        <script src="{% static 'myKitchen/plugins/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'myKitchen/plugins/perfect-scrollbar/dist/perfect-scrollbar.min.js' %}"></script>
+        <script src="{% static 'myKitchen/plugins/screenfull/dist/screenfull.js' %}"></script>
+        
+        <script src="{% static 'myKitchen/plugins/datatables.net/js/jquery.dataTables.min.js' %}"></script>
+        <script src="{% static 'myKitchen/plugins/datatables.net-bs4/js/dataTables.bootstrap4.min.js' %}"></script>      
+        
+        <script src="{% static 'myKitchen/plugins/jvectormap/jquery-jvectormap.min.js' %}"></script>
+        <script src="{% static 'myKitchen/plugins/jvectormap/tests/assets/jquery-jvectormap-world-mill-en.js' %}"></script>
+        <script src="{% static 'myKitchen/plugins/moment/moment.js' %}"></script>
+
+        
+        <script src="{% static 'myKitchen/js/tables.js' %}"></script>
+        <script src="{% static 'myKitchen/js/widgets.js' %}"></script>
+        <script src="{% static 'myKitchen/js/charts.js' %}"></script>
+        <script src="{% static 'myKitchen/dist/js/theme.min.js' %}"></script>
+        
+       
+
+</body>
+
+</html>
